@@ -27,7 +27,6 @@ func isValidEmail(email string) (bool, error) {
 	return ret.Syntax.Valid, nil
 }
 func handler(w http.ResponseWriter, r *http.Request) {
-	ListInvalidEmails = clearList
 	var EmailErr error
 	var ShareLink bool
     // Parse the form
@@ -110,6 +109,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 func init() {
 	http.HandleFunc("/", handler)
 	http.HandleFunc("/download", flushList)
+	http.HandleFunc("/clear", clearListFunc)
     http.ListenAndServe(":8000", nil)
 }
 func main() {
@@ -204,4 +204,8 @@ func flushList(w http.ResponseWriter, _ *http.Request) {
 		writer.Write(record)
 	}
 	writer.Flush()
+}
+
+func clearListFunc(w http.ResponseWriter, _*http.Request) {
+	ListInvalidEmails = clearList
 }
