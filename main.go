@@ -109,7 +109,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 func init() {
 	http.HandleFunc("/", handler)
 	http.HandleFunc("/download", flushList)
-    http.ListenAndServe(":8080", nil)
+    http.ListenAndServe(":8000", nil)
 }
 func main() {
 
