@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MailDefender</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f9;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+      }
+
+      form {
+        background: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        width: 400px;
+        animation: fadeIn 1s ease-in-out;
+      }
+
+      form input[type="text"],
+      form input[type="file"],
+      form textarea,
+      form input[type="submit"] {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+        font-size: 16px;
+        transition: all 0.3s;
+      }
+
+      form input[type="text"]:focus,
+      form textarea:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
+      }
+
+      form input[type="submit"] {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        cursor: pointer;
+      }
+
+      form input[type="submit"]:hover {
+        background-color: #0056b3;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .error,
+      .invalid-emails,
+      .share-link {
+        margin-top: 20px;
+        padding: 15px;
+        border-radius: 5px;
+        font-size: 14px;
+        animation: fadeIn 1s ease-in-out;
+      }
+
+      .error {
+        background-color: #ffdddd;
+        color: #d8000c;
+      }
+
+      .invalid-emails {
+        background-color: #fff3cd;
+        color: #856404;
+      }
+
+      .invalid-emails ul {
+        list-style-type: none;
+        padding-left: 0;
+      }
+
+      .invalid-emails ul li {
+        padding: 5px 0;
+      }
+
+      .share-link {
+        background-color: #d1ecf1;
+        color: #0c5460;
+      }
+
+      .share-link a {
+        color: #007bff;
+        text-decoration: none;
+        font-weight: bold;
+      }
+
+      .share-link a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <form action="/" method="POST" enctype="multipart/form-data">
+      <h2>MailDefender</h2>
+      <input
+        type="text"
+        name="smtpHost"
+        placeholder="SMTP Host"
+        autofocus
+        autocomplete="off"
+        required
+      />
+      <input
+        type="text"
+        name="smtpPort"
+        placeholder="SMTP Port"
+        autofocus
+        autocomplete="off"
+        required
+      />
+      <input
+        type="text"
+        name="email"
+        placeholder="Email"
+        autofocus
+        autocomplete="off"
+        required
+      />
+      <input
+        type="text"
+        name="password"
+        placeholder="Password"
+        autofocus
+        autocomplete="off"
+        required
+      />
+      <input
+        type="text"
+        name="subject"
+        placeholder="Subject"
+        autofocus
+        autocomplete="off"
+        required
+      />
+      <textarea
+        name="body"
+        placeholder="HTML Body"
+        autofocus
+        autocomplete="off"
+        required
+        rows="10"
+        cols="50"
+      ></textarea>
+      <input type="file" name="csvFile" accept=".csv" required />
+      <input type="submit" name="submit-btn" value="Submit" />
+    </form>
+    {{ if .EmailErr }}
+    <div class="error">
+      <p>Error: {{ .EmailErr }}</p>
+    </div>
+    {{ end }} {{ if .ListInvalidEmails }}
+    <div class="invalid-emails">
+      <h2>Invalid Emails List:</h2>
+      <ul>
+        {{ range .ListInvalidEmails }}
+        <li>{{ . }}</li>
+        {{ else }}
+        <li>No invalid emails.</li>
+        {{ end }}
+      </ul>
+    </div>
+    {{ end }} {{ if .ShareLink }}
+    <div class="share-link">
+      <a
+        href="https://docs.google.com/spreadsheets/d/1IwfWFpGSi8OqETFR0nRgs9uOmHT4USmjYkr5bM7uWic/edit?usp=sharing"
+        >See Open Emails</a
+      >
+    </div>
+    {{ end }}
+  </body>
+</html>
