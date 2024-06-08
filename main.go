@@ -27,6 +27,7 @@ func isValidEmail(email string) (bool, error) {
 	return ret.Syntax.Valid, nil
 }
 func handler(w http.ResponseWriter, r *http.Request) {
+	ListInvalidEmails = clearList
 	var EmailErr error
 	var ShareLink bool
     // Parse the form
