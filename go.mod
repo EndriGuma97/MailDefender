@@ -1,6 +1,6 @@
 module github.com/EndriGuma97/MailDefender
 
-go 1.22.1
+go 1.21
 
 require github.com/AfterShip/email-verifier v1.4.0
 
