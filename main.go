@@ -130,9 +130,12 @@ func sendPersonalizedEmail(SmtpHost string, SmtpPort string, Email string, Passw
 	if len(parts) < 2 {
         return fmt.Errorf("error: HTML content is not well-formed")
     }
+
+	unsubForm := "forms.zohopublic.com/amskuportal/form/UnsubscribefromOurMailingList/formperma/VtavrbifIdOVbUFr8qNkkAshi1rwP3S6ykM2tzXZDAg?email=" + Email
     part1 := parts[0]
     part2 := "</body>" + parts[1] 
 	body := part1 + `<div><img src="https://script.google.com/macros/s/AKfycby5aW5uWDqb2C52gUU5rIYMpLSZtYLj3GGC6y5U0ZUHeigvAnRyoyA5_3-Tymf4u1cjVQ/exec?id=`+To+`&emailSubject=`+Subject+`" width="1" height="1" style="display: none; border: 0px; outline: none; text-decoration: none;"> </div>` + part2
+	body = strings.ReplaceAll(body, "www.unsub.com", unsubForm)
 
 	headerMap := map[string]string{
 		"From":         email,
