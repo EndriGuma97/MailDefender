@@ -138,7 +138,7 @@ func sendPersonalizedEmail(SmtpHost string, SmtpPort string, Email string, Passw
 	body = strings.ReplaceAll(body, "www.unsub.com", unsubForm)
 
 	headerMap := map[string]string{
-		"From":         email,
+		"From":         "Colin Rigney-AMSKU <" + email + ">",
 		"To":           To,
 		"Subject":      subject,
 		"MIME-version": "1.0;",
