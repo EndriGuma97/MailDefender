@@ -89,7 +89,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 			
             //sendPersonalizedEmail("smtp.hostinger.com", "465", "info@bcbrillantemarketing.com", "Assembly3637997Ab,", "Test 1", "<div>Hello world!</div>", sendEmailTo)
            EmailErr = sendPersonalizedEmail(r.Form["smtpHost"][0], r.Form["smtpPort"][0], r.Form["email"][0], r.Form["password"][0], r.Form["subject"][0], r.Form["body"][0], sendEmailTo, firstName, lastName)
-		   time.Sleep(15 * time.Second)
+		   time.Sleep(60 * time.Second)
         }
     }
 
