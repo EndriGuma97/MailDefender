@@ -67,6 +67,8 @@ func handler(w http.ResponseWriter, r *http.Request) {
             }
 
             sendEmailTo := strings.TrimSpace(record[0]) // Assuming the email is in the first column
+			firstName := strings.TrimSpace(record[1])
+			lastName := strings.TrimSpace(record[2])
 
 			isValid, errMail := isValidEmail(sendEmailTo)
 			if !isValid {
@@ -86,8 +88,8 @@ func handler(w http.ResponseWriter, r *http.Request) {
             // Log the email to verify it's being read correctly
 			
             //sendPersonalizedEmail("smtp.hostinger.com", "465", "info@bcbrillantemarketing.com", "Assembly3637997Ab,", "Test 1", "<div>Hello world!</div>", sendEmailTo)
-           EmailErr = sendPersonalizedEmail(r.Form["smtpHost"][0], r.Form["smtpPort"][0], r.Form["email"][0], r.Form["password"][0], r.Form["subject"][0], r.Form["body"][0], sendEmailTo)
-		   time.Sleep(10 * time.Second)
+           EmailErr = sendPersonalizedEmail(r.Form["smtpHost"][0], r.Form["smtpPort"][0], r.Form["email"][0], r.Form["password"][0], r.Form["subject"][0], r.Form["body"][0], sendEmailTo, firstName, lastName)
+		   time.Sleep(15 * time.Second)
         }
     }
 
@@ -119,13 +121,17 @@ func init() {
 func main() {
 
 }
-func sendPersonalizedEmail(SmtpHost string, SmtpPort string, Email string, Password string, Subject string, Body string, To string ) error {
+func sendPersonalizedEmail(SmtpHost string, SmtpPort string, Email string, Password string, Subject string, Body string, To string, FirstName string, LastName string ) error {
 	smtpHost := SmtpHost
 	smtpPort := SmtpPort
 	email := Email
 	password := Password
 
 	subject := Subject
+	/*
+	if len(FirstName) > 1 {
+		subject = Subject + ", " + FirstName
+	} */
 	parts := strings.Split(Body, "</body>")
 	if len(parts) < 2 {
         return fmt.Errorf("error: HTML content is not well-formed")
@@ -136,6 +142,8 @@ func sendPersonalizedEmail(SmtpHost string, SmtpPort string, Email string, Passw
     part2 := "</body>" + parts[1] 
 	body := part1 + `<div><img src="https://script.google.com/macros/s/AKfycby5aW5uWDqb2C52gUU5rIYMpLSZtYLj3GGC6y5U0ZUHeigvAnRyoyA5_3-Tymf4u1cjVQ/exec?id=`+To+`&emailSubject=`+Subject+`" width="1" height="1" style="display: none; border: 0px; outline: none; text-decoration: none;"> </div>` + part2
 	body = strings.ReplaceAll(body, "www.unsub.com", unsubForm)
+	body = strings.ReplaceAll(body, "${FULLNAME}", FirstName + " " + LastName + ",")
+	//body = strings.ReplaceAll(body, "webinar.getmskultrasound.com", "webinar.getmskultrasound.com/" + FirstName + "-" + LastName)
 
 	headerMap := map[string]string{
 		"From":         "Colin Rigney-AMSKU <" + email + ">",
